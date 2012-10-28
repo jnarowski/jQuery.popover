@@ -271,7 +271,7 @@
 			return this.each(function() {
 				var $this = $(this);
 				var data = $this.popover('getData');
-				
+				$this.trigger('popover:destroy')
 				$this.unbind('.popover');
 				$(window).unbind('.popover');
 				data.popover.remove();
@@ -289,6 +289,7 @@
 				var data = $this.popover('getData');
 				
 				if(data) {
+				  $this.trigger('popover:show')
 					var popover = data.popover;
 					$this.popover('reposition');
 					popover.clearQueue().css({ zIndex: 950 }).show();
@@ -306,6 +307,7 @@
 				var data = $this.popover('getData');
 				
 				if(data)
+				  $this.trigger('popover:hide')
 					data.popover.hide().css({ zIndex: 949 });
 			});
 		},
@@ -357,6 +359,23 @@
 					var popover = data.popover;
 					var options = data.options;
 					popover.css({ zIndex: 949 }).fadeOut(ms ? ms : options.fadeSpeed);
+				}
+			});
+		},
+		/**
+		 * Destroys all popovers
+		 * 
+		 * @param int
+		 * @return jQuery
+		 */
+		destroyAll: function(ms) {
+			return $.each(popovers, function(i, pop) {
+				var $this = $(this);
+				var data = $this.popover('getData');
+				
+				if(data) {
+					var popover = data.popover;
+					popover.destroy();
 				}
 			});
 		},
